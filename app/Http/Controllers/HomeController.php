@@ -43,13 +43,27 @@ class HomeController extends Controller
         ]);
     }
 
-    public function ShowTouristAtts($province_name, $category_name, $tourism_attcs_name)
+    public function ShowProvinceWithCategory($province_name, $category_name)
     {
-        $tourism_attc = TouristAttraction::whereHas('Province', function ($query) use($province_name) {
-            $query->where('provinces.name', $province_name);
-        })->whereHas('Category', function ($query) use($category_name) {
-            $query->where('categories.name', $category_name);
-        })->where('name', $tourism_attcs_name)->firstOrFail();
+        $tourism_attcs = new TouristAttraction;
+        $province = Province::where('name', $province_name)->firstOrFail();
+        $categories = Category::whereHas('TouristAttraction', function ($query) use($province) {
+                            $query->where('tourist_attractions.province_id', $province->id);
+                        })->get();
+
+        $category = Category::where('name', $category_name)->firstOrFail();
+        $places = $tourism_attcs->where('province_id', $province->id)->where('category_id', $category->id)->paginate(15);
+
+        return view('province', [
+            'province' => $province,
+            'places' => $places,
+            'categories' => $categories
+        ]);
+    }
+
+    public function ShowTouristAtts($tourism_attcs_name)
+    {
+        $tourism_attc = TouristAttraction::with(['category', 'province'])->where('name', $tourism_attcs_name)->firstOrFail();
 
         return view('place', [
             'destination' => $tourism_attc

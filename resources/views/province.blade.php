@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="destination_banner_wrap overlay" style="background-image: url({{ Voyager::image($province->cover_image) }})">
+<div class="destination_banner_wrap overlay"
+    style="background-image: url({{ Voyager::image($province->cover_image) }})">
     <div class="destination_text text-center">
         <h3>{{ $province->name }}</h3>
         <p>{{ $province->description }}</p>
@@ -13,12 +14,14 @@
     <ul class="nav nav-pills">
         @if (count($categories) > 1)
         <li class="nav-item">
-            <a class="nav-link {{ !request()->query('category') ? 'active' : '' }}" href="{{ route('ShowProvince', $province->name) }}">ทั้งหมด</a>
+            <a class="nav-link {{ !request()->route()->category ? 'active' : '' }}"
+                href="{{ route('ShowProvince', $province->name) }}">ทั้งหมด</a>
         </li>
         @endif
         @foreach ($categories as $category)
         <li class="nav-item">
-            <a class="nav-link {{ request()->query('category') === $category->name ? 'active' : '' }}" href="{{ route('ShowProvince', $province->name) }}?category={{ $category->name }}">{{ $category->name }}</a>
+            <a class="nav-link {{ request()->route()->category === $category->name ? 'active' : '' }}"
+                href="{{ route('ShowProvinceWithCategory', [$province->name, $category->name]) }}">{{ $category->name }}</a>
         </li>
         @endforeach
     </ul>
@@ -38,7 +41,7 @@
                     </div>
                     <div class="place_info">
                         <a
-                            href="{{ route('ShowTouristAtts', [$place->province->name, $place->category->name, $place->name]) }}">
+                            href="{{ route('ShowTouristAtts', $place->name) }}">
                             <h3>{{ $place->name }}</h3>
                         </a>
                         <p>{!! Str::limit(strip_tags($place->body), $limit = 20, $end = '...') !!}</p>

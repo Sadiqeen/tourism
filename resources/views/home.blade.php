@@ -28,7 +28,7 @@
                     </div>
                     <div class="place_info">
                         <a
-                            href="{{ route('ShowTouristAtts', [$place->province->name, $place->category->name, $place->name]) }}">
+                            href="{{ route('ShowTouristAtts', $place->name) }}">
                             <h3>{{ $place->name }}</h3>
                         </a>
                         <p>{!! Str::limit(strip_tags($place->body), $limit = 20, $end = '...') !!}</p>
