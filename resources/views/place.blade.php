@@ -37,21 +37,30 @@
 <div class="destination_details_info">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-8 col-md-9">
+            <div class="col-lg-10 col-md-9">
 
                 <ul class="nav nav-pills justify-content-center mb-4" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" id="home-tab" data-toggle="tab" href="#destination" role="tab"
                             aria-controls="destination" aria-selected="true">Destination</a>
                     </li>
+
+                    @php
+                    $gallery_images = json_decode($destination->gallery_images);
+                    @endphp
+
+                    @if($gallery_images != null)
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" id="profile-tab" data-toggle="tab" href="#gallary" role="tab"
                             aria-controls="gallary" aria-selected="false">Gallary</a>
                     </li>
+                    @endif
+
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" id="contact-tab" data-toggle="tab" href="#map" role="tab"
                             aria-controls="map" aria-selected="false">Map</a>
                     </li>
+
                 </ul>
 
                 <div class="tab-content" id="myTabContent">
@@ -59,91 +68,33 @@
                         <div class="destination_info">
                             {!! $destination->body !!}
                         </div>
+                        <div id="viewer"></div>
                     </div>
 
+                    @if($gallery_images != null)
                     <div class="tab-pane fade" id="gallary" role="tabpanel" aria-labelledby="profile-tab">
                         <div class="row text-center text-lg-left">
 
-                            <div class="col-md-4 col-6">
-                                <a href="#" class="d-block mb-4 h-100">
-                                    <img class="img-fluid img-thumbnail"
-                                        src="https://source.unsplash.com/pWkk7iiCoDM/400x300" alt="">
+                            @foreach($gallery_images as $image)
+                            <div class="col-md-4 col-6 mb-3">
+                                <a class="w-100" href="{{ Voyager::image( $image ) }}" data-lightbox="roadtrip">
+                                    <img class="w-100 img-thumbnail" style="height: 120px;object-fit: cover;"
+                                        src="{{ Voyager::image( $image ) }}" alt="image-{{ $image }}" />
                                 </a>
+
                             </div>
-                            <div class="col-md-4 col-6">
-                                <a href="#" class="d-block mb-4 h-100">
-                                    <img class="img-fluid img-thumbnail"
-                                        src="https://source.unsplash.com/aob0ukAYfuI/400x300" alt="">
-                                </a>
-                            </div>
-                            <div class="col-md-4 col-6">
-                                <a href="#" class="d-block mb-4 h-100">
-                                    <img class="img-fluid img-thumbnail"
-                                        src="https://source.unsplash.com/EUfxH-pze7s/400x300" alt="">
-                                </a>
-                            </div>
-                            <div class="col-md-4 col-6">
-                                <a href="#" class="d-block mb-4 h-100">
-                                    <img class="img-fluid img-thumbnail"
-                                        src="https://source.unsplash.com/M185_qYH8vg/400x300" alt="">
-                                </a>
-                            </div>
-                            <div class="col-md-4 col-6">
-                                <a href="#" class="d-block mb-4 h-100">
-                                    <img class="img-fluid img-thumbnail"
-                                        src="https://source.unsplash.com/sesveuG_rNo/400x300" alt="">
-                                </a>
-                            </div>
-                            <div class="col-md-4 col-6">
-                                <a href="#" class="d-block mb-4 h-100">
-                                    <img class="img-fluid img-thumbnail"
-                                        src="https://source.unsplash.com/AvhMzHwiE_0/400x300" alt="">
-                                </a>
-                            </div>
-                            <div class="col-md-4 col-6">
-                                <a href="#" class="d-block mb-4 h-100">
-                                    <img class="img-fluid img-thumbnail"
-                                        src="https://source.unsplash.com/2gYsZUmockw/400x300" alt="">
-                                </a>
-                            </div>
-                            <div class="col-md-4 col-6">
-                                <a href="#" class="d-block mb-4 h-100">
-                                    <img class="img-fluid img-thumbnail"
-                                        src="https://source.unsplash.com/EMSDtjVHdQ8/400x300" alt="">
-                                </a>
-                            </div>
-                            <div class="col-md-4 col-6">
-                                <a href="#" class="d-block mb-4 h-100">
-                                    <img class="img-fluid img-thumbnail"
-                                        src="https://source.unsplash.com/8mUEy0ABdNE/400x300" alt="">
-                                </a>
-                            </div>
-                            <div class="col-md-4 col-6">
-                                <a href="#" class="d-block mb-4 h-100">
-                                    <img class="img-fluid img-thumbnail"
-                                        src="https://source.unsplash.com/G9Rfc1qccH4/400x300" alt="">
-                                </a>
-                            </div>
-                            <div class="col-md-4 col-6">
-                                <a href="#" class="d-block mb-4 h-100">
-                                    <img class="img-fluid img-thumbnail"
-                                        src="https://source.unsplash.com/aJeH0KcFkuc/400x300" alt="">
-                                </a>
-                            </div>
-                            <div class="col-md-4 col-6">
-                                <a href="#" class="d-block mb-4 h-100">
-                                    <img class="img-fluid img-thumbnail"
-                                        src="https://source.unsplash.com/p2TQ-3Bh3Oo/400x300" alt="">
-                                </a>
-                            </div>
+                            @endforeach
+
                         </div>
                     </div>
+                    @endif
 
                     <div class="tab-pane fade" id="map" role="tabpanel" aria-labelledby="contact-tab">
                         <div class="d-flex justify-content-center">
                             {!! $destination->location !!}
                         </div>
                     </div>
+
                 </div>
 
                 @include('components.comment')
@@ -152,3 +103,21 @@
     </div>
 </div>
 @endsection
+
+@push('script')
+<style>
+    #viewer {
+        width: 100%;
+        height: 500px;
+    }
+</style>
+@endpush
+
+@push('script')
+<script>
+    var viewer = new PhotoSphereViewer.Viewer({
+    container: document.querySelector('#viewer'),
+    panorama: '{{ Voyager::image( $destination->panorama_image ) }}'
+});
+</script>
+@endpush
