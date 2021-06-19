@@ -13,4 +13,14 @@ class Province extends Model
     {
         return $this->hasMany('App\TouristAttraction');
     }
+
+    public function Hostel()
+    {
+        return $this->hasMany('App\Hostel');
+    }
+
+    public function Review()
+    {
+        return $this->hasMany('App\Review');
+    }
 }

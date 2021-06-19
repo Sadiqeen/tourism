@@ -36,4 +36,24 @@ class User extends \TCG\Voyager\Models\User
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function HasReview($type, $id)
+    {
+        $query = '';
+
+        switch ($type) {
+            case 'review_id':
+                $query = 'review_id';
+                break;
+
+            case 'hostel_id':
+                $query = 'hostel_id';
+                break;
+
+            default:
+                $query = 'tourist_attraction_id';
+                break;
+        }
+        return $this->hasMany('App\Comment')->where($query, $id)->where('score', '>', 0);
+    }
 }

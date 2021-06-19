@@ -18,4 +18,14 @@ class TouristAttraction extends Model
     {
         return $this->belongsTo('App\Province');
     }
+
+    public function Comment()
+    {
+        return $this->hasMany('App\Comment');
+    }
+
+    public function CommentHasReview()
+    {
+        return $this->hasMany('App\Comment')->where('score', '>', 0);
+    }
 }

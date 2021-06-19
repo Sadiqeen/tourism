@@ -14,7 +14,7 @@ return [
         'add_default_role_on_register' => true,
         'default_role'                 => 'user',
         'default_avatar'               => 'users/default.png',
-        'redirect'                     => '/admin',
+        'redirect'                     => '/',
     ],
 
     /*
@@ -55,7 +55,7 @@ return [
     */
 
     'storage' => [
-        'disk' => env('FILESYSTEM_DRIVER', 'public'),
+        'disk' => env('FILESYSTEM_DRIVER', 'voyager'),
     ],
 
     /*
@@ -111,7 +111,7 @@ return [
          */
         'locales' => [
             'en',
-            //'pt',
+            'pt',
         ],
     ],
 
@@ -144,9 +144,10 @@ return [
         ],
 
         'widgets' => [
-            'TCG\\Voyager\\Widgets\\UserDimmer',
-            'TCG\\Voyager\\Widgets\\PostDimmer',
-            'TCG\\Voyager\\Widgets\\PageDimmer',
+            'App\\Widgets\\UserDimmer',
+            'App\\Widgets\\TouristTccsDimmer',
+            'App\\Widgets\\HostelDimmer',
+            'App\\Widgets\\ReviewDimmer',
         ],
 
     ],

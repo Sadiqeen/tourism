@@ -65,6 +65,14 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
         ],
 
+
+        'voyager' => [
+            'driver' => 'local',
+            'root' => public_path('storage'),// change here something specific to your application need
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+        ],
+
     ],
 
     /*

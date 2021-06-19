@@ -15,5 +15,6 @@ class NavComposer
     public function compose(View $view)
     {
         $view->with('nav_place_province', Province::whereHas('TouristAttraction')->get());
+        $view->with('nav_hostel_province', Province::whereHas('Hostel')->get());
     }
 }

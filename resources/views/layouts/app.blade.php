@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
 
     <link rel="stylesheet" href="{{ asset('plugins/lightbox2-2.11.3/dist/css/lightbox.min.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/photo-sphere-viewer.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/photo-sphere-viewer.min.css" />
 
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <!-- <link rel="stylesheet" href="css/responsive.css"> -->
@@ -44,14 +44,14 @@
     <!-- header-start -->
     <header>
         <div class="header-area ">
-            <div id="sticky-header" class="main-header-area">
+            <div id="sticky-header" class="main-header-area" style="padding: 25px 35px 25px 35px;">
                 <div class="container-fluid">
                     <div class="header_bottom_border">
                         <div class="row align-items-center">
                             <div class="col-xl-2 col-lg-2">
                                 <div class="logo">
                                     <a href="{{ route('home') }}">
-                                        <img src="{{ asset('img/logo.png') }}" alt="">
+                                        <img src="{{ Voyager::image(setting('site.logo')) ?? asset('img/logo.png') }}" alt="">
                                     </a>
                                 </div>
                             </div>
@@ -61,44 +61,61 @@
                                         <ul id="navigation">
                                             <li><a class="active" href="{{ route('home') }}">หน้าแรก</a></li>
                                             @if (count($nav_place_province))
-                                            <li><a href="#">แหล่งท่องเที่ยว <i class="ti-angle-down"></i></a>
+                                            <li><a href="{{ route('ShowAllTouristAtts') }}">แหล่งท่องเที่ยว <i
+                                                        class="ti-angle-down"></i></a>
                                                 <ul class="submenu">
                                                     @foreach ($nav_place_province as $province)
-                                                    <li><a href="{{ route('ShowProvince', $province->name) }}">{{ $province->name }}</a></li>
+                                                    <li><a
+                                                            href="{{ route('ShowProvince', $province->name) }}">{{ $province->name }}</a>
+                                                    </li>
                                                     @endforeach
                                                 </ul>
                                             </li>
                                             @endif
-                                            <li><a href="#">ที่พัก <i class="ti-angle-down"></i></a>
+                                            @if (count($nav_hostel_province))
+                                            <li><a href="{{ route('hostel.index') }}">ที่พัก <i
+                                                        class="ti-angle-down"></i></a>
                                                 <ul class="submenu">
-                                                        <li><a href="#">ยะลา</a></li>
-                                                        <li><a href="#">ปัตตานี</a></li>
-                                                        <li><a href="#">นราธวาส</a></li>
+                                                    @foreach ($nav_hostel_province as $province)
+                                                    <li><a
+                                                            href="{{ route('hostel.province', $province) }}">{{ $province->name }}</a>
+                                                    </li>
+                                                    @endforeach
                                                 </ul>
                                             </li>
-                                            @auth
-                                            <li><a href="#">รีวิว</a></l></li>
-                                            @endauth
-                                            <li><a href="#">เกี่ยวกับเรา</a></l></li>
+                                            @endif
+                                            <li><a href="{{ route('review.index') }}">รีวิว</a></l>
                                         </ul>
                                     </nav>
                                 </div>
                             </div>
                             <div class="col-xl-4 col-lg-4 d-none d-lg-block">
-                                <div class="social_wrap d-flex align-items-center justify-content-end">
-                                    <div class="social_links d-none d-xl-block">
-                                        <ul>
-                                            <li><a href="#"> <i class="fa fa-facebook"></i> </a></li>
-                                            <li><a href="#"> <i class="fa fa-youtube-play"></i> </a></li>
-                                            <li><a href="#"> <i class="fa fa-instagram"></i> </a></li>
-                                        </ul>
+                                <div class="d-flex align-items-center justify-content-end">
+                                    @auth
+                                    <div class="dropdown">
+                                        <button class="btn btn-danger dropdown-toggle" type="button"
+                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            {{ auth()->user()->name }}
+                                        </button>
+                                        <div class="dropdown-menu  dropdown-menu-right"
+                                            aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item"
+                                                href="{{ route('voyager.dashboard') }}">หน้าแดชบอร์ด</a>
+                                            <a class="dropdown-item" href="javascript:void(0)"
+                                                onclick="$('#logout-form').submit()">ออกจากระบบ</a>
+                                        </div>
+                                        <form action="{{ route('voyager.logout') }}" method="POST" id="logout-form"
+                                            class="d-none">
+                                            @csrf
+                                        </form>
                                     </div>
+                                    @else
+                                    <a class="btn btn-danger" href="{{ route('voyager.login') }}">
+                                        เข้าสู่ระบบ
+                                    </a>
+                                    @endauth
                                 </div>
-                            </div>
-                            <div class="seach_icon">
-                                <a data-toggle="modal" data-target="#exampleModalCenter" href="#">
-                                    <i class="fa fa-search"></i>
-                                </a>
                             </div>
                             <div class="col-12">
                                 <div class="mobile_menu d-block d-lg-none"></div>
@@ -115,118 +132,20 @@
     @yield('content')
 
     <footer class="footer">
-        <div class="footer_top">
+        <div class="footer_top" style="padding-top: 80px; padding-bottom: 80px;">
             <div class="container">
-                <div class="row">
-                    <div class="col-xl-4 col-md-6 col-lg-4 ">
-                        <div class="footer_widget">
-                            <div class="footer_logo">
-                                <a href="#">
-                                    <img src="img/footer_logo.png" alt="">
-                                </a>
-                            </div>
-                            <p>5th flora, 700/D kings road, green <br> lane New York-1782 <br>
-                                <a href="#">+10 367 826 2567</a> <br>
-                                <a href="#">contact@carpenter.com</a>
-                            </p>
-                            <div class="socail_links">
-                                <ul>
-                                    <li>
-                                        <a href="#">
-                                            <i class="ti-facebook"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="ti-twitter-alt"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-instagram"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-pinterest"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-youtube-play"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-md-6 col-lg-2">
-                        <div class="footer_widget">
-                            <h3 class="footer_title">
-                                Company
-                            </h3>
-                            <ul class="links">
-                                <li><a href="#">Pricing</a></li>
-                                <li><a href="#">About</a></li>
-                                <li><a href="#"> Gallery</a></li>
-                                <li><a href="#"> Contact</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-3">
-                        <div class="footer_widget">
-                            <h3 class="footer_title">
-                                Popular destination
-                            </h3>
-                            <ul class="links double_links">
-                                <li><a href="#">Indonesia</a></li>
-                                <li><a href="#">America</a></li>
-                                <li><a href="#">India</a></li>
-                                <li><a href="#">Switzerland</a></li>
-                                <li><a href="#">Italy</a></li>
-                                <li><a href="#">Canada</a></li>
-                                <li><a href="#">Franch</a></li>
-                                <li><a href="#">England</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-3">
-                        <div class="footer_widget">
-                            <h3 class="footer_title">
-                                Instagram
-                            </h3>
-                            <div class="instagram_feed">
-                                <div class="single_insta">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="text-center">
+                            <div class="footer_widget">
+                                <div class="footer_logo">
                                     <a href="#">
-                                        <img src="img/instagram/1.png" alt="">
+                                        <img src="{{ Voyager::image(setting('site.footer_logo')) ?? asset('img/logo.png') }}" alt="">
                                     </a>
                                 </div>
-                                <div class="single_insta">
-                                    <a href="#">
-                                        <img src="img/instagram/2.png" alt="">
-                                    </a>
-                                </div>
-                                <div class="single_insta">
-                                    <a href="#">
-                                        <img src="img/instagram/3.png" alt="">
-                                    </a>
-                                </div>
-                                <div class="single_insta">
-                                    <a href="#">
-                                        <img src="img/instagram/4.png" alt="">
-                                    </a>
-                                </div>
-                                <div class="single_insta">
-                                    <a href="#">
-                                        <img src="img/instagram/5.png" alt="">
-                                    </a>
-                                </div>
-                                <div class="single_insta">
-                                    <a href="#">
-                                        <img src="img/instagram/6.png" alt="">
-                                    </a>
-                                </div>
+                                <span class="text-white h2">"</span>
+                                <p class="mb-3">{{ setting('site.description') }}</p>
+                                <span class="text-white h2">"</span>
                             </div>
                         </div>
                     </div>
@@ -239,9 +158,9 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <p class="copy_right text-center">
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            Copyright &copy;<script>
+                                document.write(new Date().getFullYear());
+                            </script> All rights reserved
                         </p>
                     </div>
                 </div>
@@ -249,18 +168,18 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         </div>
     </footer>
 
-
-  <!-- Modal -->
-  <div class="modal fade custom_search_pop" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="serch_form">
-            <input type="text" placeholder="Search" >
-            <button type="submit">search</button>
+    <!-- Modal -->
+    <div class="modal fade custom_search_pop" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="serch_form">
+                    <input type="text" placeholder="Search">
+                    <button type="submit">search</button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
     <!-- link that opens popup -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     {{-- <script src="https://static.codepen.io/assets/common/stopExecutionOnTimeout-de7e2ef6bfefd24b79a3f68b414b87b8db5b08439cac3f1012092b2290c719cd.js"></script> --}}
@@ -296,6 +215,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <script src="{{ asset('js/mail-script.js') }}"></script>
 
     <script src="{{ asset('plugins/lightbox2-2.11.3/dist/js/lightbox.min.js') }}"></script>
+    <script src="{{ asset('plugins/auxiliary-rater-80dd707/rater.min.js') }}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/three/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/uevent@2/browser.min.js"></script>

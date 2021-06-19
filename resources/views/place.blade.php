@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="destination_banner_wrap overlay"
-    style="background-image: url({{ Voyager::image($destination->cover_image) }})">
+    style="background-image: url({{ Voyager::image($destination->cover_image) }}); padding: 250px 0">
     <div class="destination_text text-center">
         <h3>{{ $destination->name }}</h3>
         <div class="d-flex d-md-none flex-column text-white justify-content-md-center">
@@ -68,7 +68,9 @@
                         <div class="destination_info">
                             {!! $destination->body !!}
                         </div>
+                        @if($destination->panorama_image)
                         <div id="viewer"></div>
+                        @endif
                     </div>
 
                     @if($gallery_images != null)
@@ -114,10 +116,14 @@
 @endpush
 
 @push('script')
+@stack('moreScript')
+
+@if($destination->panorama_image)
 <script>
     var viewer = new PhotoSphereViewer.Viewer({
     container: document.querySelector('#viewer'),
     panorama: '{{ Voyager::image( $destination->panorama_image ) }}'
 });
 </script>
+@endif
 @endpush
