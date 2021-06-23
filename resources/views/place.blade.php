@@ -42,7 +42,7 @@
                 <ul class="nav nav-pills justify-content-center mb-4" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" id="home-tab" data-toggle="tab" href="#destination" role="tab"
-                            aria-controls="destination" aria-selected="true">Destination</a>
+                            aria-controls="destination" aria-selected="true">ข้อมูลสถานที่</a>
                     </li>
 
                     @php
@@ -52,13 +52,13 @@
                     @if($gallery_images != null)
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" id="profile-tab" data-toggle="tab" href="#gallary" role="tab"
-                            aria-controls="gallary" aria-selected="false">Gallary</a>
+                            aria-controls="gallary" aria-selected="false">แกลลอรี่</a>
                     </li>
                     @endif
 
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" id="contact-tab" data-toggle="tab" href="#map" role="tab"
-                            aria-controls="map" aria-selected="false">Map</a>
+                            aria-controls="map" aria-selected="false">แผนที่</a>
                     </li>
 
                 </ul>

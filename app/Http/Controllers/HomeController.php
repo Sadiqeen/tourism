@@ -15,8 +15,20 @@ class HomeController extends Controller
     public function home()
     {
         $province = Province::whereHas('TouristAttraction')->orderBy('order', 'asc')->get();
-        $tourism_attcs = TouristAttraction::with(['Province', 'Category', 'Comment'])->orderBy('created_at', 'desc')->limit(6)->get();
-        $reviews = Review::with(['user', 'category'])->limit(6)->get();
+        $tourism_attcs = TouristAttraction::with(['Province', 'Category'])
+                            ->select('tourist_attractions.*', \DB::raw('score.total_score/row.total_row As total_star'))
+                            ->joinSub('SELECT SUM(score) as total_score, `tourist_attraction_id` FROM `comments` WHERE `score` > 0 GROUP BY `tourist_attraction_id`', 'score', 'score.tourist_attraction_id', '=', 'tourist_attractions.id', 'left')
+                            ->joinSub('SELECT count(tourist_attraction_id) as total_row, `tourist_attraction_id` FROM `comments` WHERE `score` > 0 GROUP BY `tourist_attraction_id`', 'row', 'row.tourist_attraction_id', '=', 'tourist_attractions.id', 'left')
+                            ->limit(6)
+                            ->orderBy('total_star', 'DESC')
+                            ->get();
+
+        $reviews = Review::with(['user', 'category'])
+                        ->select('reviews.*', \DB::raw('score.total_score/row.total_row As total_star'))
+                        ->joinSub('SELECT SUM(score) as total_score, `review_id` FROM `comments` WHERE `score` > 0 GROUP BY `review_id`', 'score', 'score.review_id', '=', 'reviews.id', 'left')
+                        ->joinSub('SELECT count(tourist_attraction_id) as total_row, `review_id` FROM `comments` WHERE `score` > 0 GROUP BY `review_id`', 'row', 'row.review_id', '=', 'reviews.id', 'left')
+                        ->orderBy('total_score', 'DESC')
+                        ->limit(6)->get();
 
         return view('home', [
             'provinces' => $province,

@@ -11,7 +11,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-6">
                 <div class="section_title text-center mb_70">
-                    <h3>สถานที่ท่องเที่ยว</h3>
+                    <h3>สถานที่แนะนำ</h3>
                     {{-- <p>Suffered alteration in some form, by injected humour or good day randomised booth anim 8-bit
                         hella wolf moon beard words.</p> --}}
                 </div>
@@ -80,7 +80,7 @@
                 <div class="video_wrap text-center">
                     <h3>Enjoy Video</h3>
                     <div class="video_icon">
-                        <a class="popup-video video_play_button" href="https://www.youtube.com/watch?v=f59dDEk57i0">
+                        <a class="popup-video video_play_button" href="https://www.youtube.com/watch?v=3LdTsXQVzmk">
                             <i class="fa fa-play"></i>
                         </a>
                     </div>
@@ -96,7 +96,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-6">
                 <div class="section_title text-center mb_70">
-                    <h3>รีวิว</h3>
+                    <h3>บทความแนะนำ</h3>
                 </div>
             </div>
         </div>

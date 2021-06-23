@@ -31,29 +31,39 @@
 <div class="popular_places_area pt-5">
     <div class="container">
         <div class="row">
-            @foreach ($places as $place)
+        @foreach ($places as $place)
             <div class="col-lg-4 col-md-6">
                 <div class="single_place">
                     <div class="thumb">
                         <img src="{{ Voyager::image($place->cover_image) }}" alt="">
-                        <a href="{{ $place->location }}" target="_blank" class="prise"><i class="fa fa-map-marker"
-                                aria-hidden="true"></i></a>
                     </div>
                     <div class="place_info">
-                        <a
-                            href="{{ route('ShowTouristAtts', $place->name) }}">
+                        <a href="{{ route('ShowTouristAtts', $place->name) }}">
                             <h3>{{ $place->name }}</h3>
                         </a>
                         <p>{!! Str::limit(strip_tags($place->body), $limit = 20, $end = '...') !!}</p>
                         <div class="rating_days d-flex justify-content-between">
+                            @if ($place->CommentHasReview()->count())
                             <span class="d-flex justify-content-center align-items-center">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <a href="#">(20 Review)</a>
+                                @for ($start = 0; $start < ($place->CommentHasReview()->sum('score') /
+                                    $place->CommentHasReview()->count()); $start++)
+                                    <i class="fa fa-star text-danger"></i>
+                                    @endfor
+                                    @for ($leftStart = $start; $leftStart < 5; $leftStart++ ) <i
+                                        class="fa fa-star text-secondary"></i>
+                                        @endfor
+                                        <a href="#">({{ $place->CommentHasReview()->count() }} Review)</a>
                             </span>
+                            @else
+                            <span class="d-flex justify-content-center align-items-center">
+                                <i class="fa fa-star text-secondary"></i>
+                                <i class="fa fa-star text-secondary"></i>
+                                <i class="fa fa-star text-secondary"></i>
+                                <i class="fa fa-star text-secondary"></i>
+                                <i class="fa fa-star text-secondary"></i>
+                                <a href="#">(0 Review)</a>
+                            </span>
+                            @endif
                             <div class="days">
                                 <i class="fa fa-clock-o"></i>
                                 <a href="#">{{ $place->created_at->diffForHumans() }}</a>

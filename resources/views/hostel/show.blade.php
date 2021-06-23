@@ -52,10 +52,19 @@
                     <div class="tab-pane fade show active" id="destination" role="tabpanel" aria-labelledby="home-tab">
                         <div class="destination_info">
                             {!! $hostel->info !!}
+                            @if($hostel->panorama_image)
+                            <div id="viewer"></div>
+                            @endif
                         </div>
+
                         <div class="bordered_1px"></div>
                         <h3>ข้อมูลการติดต่อ</h3>
                         {!! $hostel->contact !!}
+                        @if ($hostel->location)
+                        <br />
+                        <div class="mt-4">{!! $hostel->location !!}</div>
+                        @endif
+
                     </div>
 
                     @if($gallery_images != null)
@@ -86,5 +95,24 @@
 @endsection
 
 @push('script')
+<style>
+    #viewer {
+        width: 100%;
+        height: 500px;
+        margin-top: 50px
+    }
+</style>
+@endpush
+
+@push('script')
 @stack('moreScript')
+
+@if($hostel->panorama_image)
+<script>
+    var viewer = new PhotoSphereViewer.Viewer({
+    container: document.querySelector('#viewer'),
+    panorama: '{{ Voyager::image( $hostel->panorama_image ) }}'
+});
+</script>
+@endif
 @endpush

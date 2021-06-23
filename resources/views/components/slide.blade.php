@@ -9,7 +9,7 @@
                         <div class="slider_text text-center">
                             <h3>{{ $province->name }}</h3>
                             <p>{{ $province->description }}</p>
-                            <a href="{{ route('ShowProvince', $province->name) }}" class="boxed-btn3">Explore Now</a>
+                            <a href="{{ route('ShowProvince', $province->name) }}" class="boxed-btn3">ชมสถานที่</a>
                         </div>
                     </div>
                 </div>

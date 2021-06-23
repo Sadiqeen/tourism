@@ -4,7 +4,7 @@
 <div class="destination_banner_wrap overlay"
     style="background-image: url({{ Voyager::image('kairat-murataliev-vdTYU7KAnFw-unsplash.jpg') }}); padding: 250px 0">
     <div class="destination_text text-center">
-        <h3>รีวิว</h3>
+        <h3>บทความ</h3>
     </div>
 </div>
 

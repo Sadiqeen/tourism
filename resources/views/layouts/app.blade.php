@@ -84,7 +84,7 @@
                                                 </ul>
                                             </li>
                                             @endif
-                                            <li><a href="{{ route('review.index') }}">รีวิว</a></l>
+                                            <li><a href="{{ route('review.index') }}">บทความ</a></l>
                                         </ul>
                                     </nav>
                                 </div>
